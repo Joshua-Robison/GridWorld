@@ -1,11 +1,8 @@
-# Grid World: Environment Interactions
 @enum Action UP=1 DOWN LEFT RIGHT
 
-# Generate Action Space
 const actionspace = [UP, DOWN, LEFT, RIGHT]
 const actions = ["↑", "↓", "←", "→"] # alias
 
-# Action Space: Movement
 const MOVEMENTS = Dict(
     UP    => State(0, 1),
     DOWN  => State(0, -1),
@@ -26,7 +23,7 @@ function transition(g::Grid, s::State, a::Action)
     if reward(g, s) != 0 # reached a terminal state
         return Deterministic(g.null_state);
     end
-
+    
     N = length(actionspace)
     next_states = Vector{State}(undef, N+1)
     probabilities = zeros(N+1)

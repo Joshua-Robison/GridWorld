@@ -1,4 +1,3 @@
-# Grid World: Module Definition
 module GridWorld
 
 include("environment.jl")

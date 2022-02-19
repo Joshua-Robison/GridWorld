@@ -1,4 +1,3 @@
-# Grid World: Test Package
 using Test
 using GridWorld
 

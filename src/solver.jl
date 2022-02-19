@@ -1,23 +1,21 @@
-# Grid World: Value Iteration Solver
-export Policy
-export solve
+export Policy, solve
 
 struct Policy
     policy::Matrix{Real}
     actions::Vector{String}
-    function Policy(p::Matrix; a::Vector{String} = actions)
+    function Policy(p::Matrix; a::Vector{String} = actions)::Policy
         return new(p, a);
     end
 end
 
 function Base.show(io::IO, p::Policy)::Nothing
-    # println("\033[2J") # clear repl
-    # println("\033[$(displaysize(stdout)[1])A")
+    # println(io, "\033[2J") # clear repl
+    # println(io, "\033[$(displaysize(stdout)[1])A")
     rows, cols = size(p.policy)
     border = "\t" * " "^7 * "-"^(cols * 7)
-    println(border)
+    println(io, border)
     for i in rows:-1:1
-        print("\t")
+        print(io, "\t")
         for j in 1:cols
             if j == 1
                 @printf "%-5i  | %s   |" i p.actions[p.policy[j,i]]
@@ -25,15 +23,15 @@ function Base.show(io::IO, p::Policy)::Nothing
                 @printf "  %s   |" p.actions[p.policy[j,i]]
             end
         end
-        println("\n" * border)
+        println(io, "\n" * border)
     end
-    print("\t   ")
+    print(io, "\t   ")
     for k in 1:cols
         @printf "    %3.0f" k
     end
 end
 
-function solve(g::Grid; iterations::Int = 100, belres::Float64 = 1e-3, discount_factor::Float64 = 0.90)
+function solve(g::Grid; iterations::Int = 100, belres::Float64 = 1e-3, discount_factor::Float64 = 0.90)::Policy
     ns = length(statespace(g)) # number of states
     na = length(actionspace)   # number of actions
 

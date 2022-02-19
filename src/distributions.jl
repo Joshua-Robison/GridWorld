@@ -1,6 +1,3 @@
-# Grid World: Utilities
-import Base: rand
-
 #=
     SOURCE: POMDPModelTools.jl
     --------------------------
@@ -12,13 +9,13 @@ struct Deterministic{T}
     val::T
 end
 
-@inline rand(d::Deterministic) = d.val;
+@inline Base.rand(d::Deterministic) = d.val;
 @inline pdf(d::Deterministic, x) = convert(Float64, x == d.val);
 @inline mode(d::Deterministic) = d.val;
 @inline mean(d::Deterministic{N}) where N<:Number = d.val / 1;
 @inline mean(d::Deterministic) = d.val;
 @inline support(d::Deterministic) = (d.val,);
-@inline weighted_iterator(d) = (x=>pdf(d, x) for x in support(d))
+@inline weighted_iterator(d) = (x=>pdf(d, x) for x in support(d));
 
 #=
     SOURCE: POMDPModelTools.jl
@@ -40,7 +37,7 @@ function Base.iterate(d::SparseCat, dstate::Tuple)
     vstate, pstate = dstate
     vnext = iterate(d.vals, vstate)
     pnext = iterate(d.probs, pstate)
-    if vnext == nothing || pnext == nothing
+    if vnext === nothing || pnext === nothing
         return nothing;
     end
     val, vstate_next = vnext
